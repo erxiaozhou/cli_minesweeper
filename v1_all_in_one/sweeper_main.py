@@ -1,7 +1,7 @@
 import random
 
 
-WIDTH = 3
+WIDTH = 5
 HEIGHT = 3
 MINE_ICON = '*'
 UNKNOWN_ICON = ' '
@@ -10,7 +10,8 @@ FLAG = 'F'
 
 
 def main():
-    ori_mine_state_map = generate_ori_mine_state_map(WIDTH, HEIGHT, ORI_MINE_NUMBER)
+    ori_mine_state_map = generate_ori_mine_state_map(
+        WIDTH, HEIGHT, ORI_MINE_NUMBER)
     unmasked_map = draw_the_unmasked_map(ori_mine_state_map)
     mask_map = generate_ori_mask_map(WIDTH, HEIGHT)
     masked_map = generated_masked_map(unmasked_map, mask_map)
@@ -21,7 +22,7 @@ def main():
         if flag_a_tile:
             set_flag(mask_map, x, y)
             flags_left -= 1
-        elif ori_mine_state_map[x][y] == 1:
+        elif ori_mine_state_map[y][x] == 1:
             print("You lose!")
             break
         else:
@@ -78,15 +79,15 @@ def generate_ori_mine_state_map(width, height, ori_mine_number):
 
 
 def detect_mine_number(mine_state_map, x, y):
-    if mine_state_map[x][y] == 1:
+    if mine_state_map[y][x] == 1:
         return MINE_ICON
     else:
         mine_number = 0
         for i in range(x-1, x+2):
             for j in range(y-1, y+2):
-                if i < 0 or i >= HEIGHT or j < 0 or j >= WIDTH:
+                if i < 0 or i >= WIDTH or j < 0 or j >= HEIGHT:
                     continue
-                if mine_state_map[i][j] == 1:
+                if mine_state_map[j][i] == 1:
                     mine_number += 1
         return str(mine_number)
 
@@ -98,7 +99,7 @@ def draw_the_unmasked_map(mine_state_map):
 
 
 def generated_masked_map(unmasked_map, mask_map):
-    masked_map = [[unmasked_map[i][j] if mask_map[i][j]
+    masked_map = [[unmasked_map[j][i] if mask_map[j][i]
                    else UNKNOWN_ICON for i in range(WIDTH)] for j in range(HEIGHT)]
     return masked_map
 
@@ -108,9 +109,9 @@ def generate_ori_mask_map(WIDTH, HEIGHT):
 
 
 def all_mines_are_flagged(mask_map, ori_mine_state_map):
-    for x in range(HEIGHT):
-        for y in range(WIDTH):
-            if ori_mine_state_map[x][y] == 1 and mask_map[x][y] != FLAG:
+    for y in range(HEIGHT):
+        for x in range(WIDTH):
+            if ori_mine_state_map[y][x] == 1 and mask_map[y][x] != FLAG:
                 return False
     return True
 
@@ -120,21 +121,21 @@ def all_tiles_are_masked(mask_map):
 
 
 def update_mask_map(mask_map, x, y, unmasked_map):
-    if not mask_map[x][y]:
-        mask_map[x][y] = not mask_map[x][y]
-        if unmasked_map[x][y] == '0':
+    if not mask_map[y][x]:
+        mask_map[y][x] = not mask_map[y][x]
+        if unmasked_map[y][x] == '0':
             if x > 0:
                 update_mask_map(mask_map, x-1, y, unmasked_map)
-            if x < HEIGHT-1:
+            if x < WIDTH-1:
                 update_mask_map(mask_map, x+1, y, unmasked_map)
             if y > 0:
                 update_mask_map(mask_map, x, y-1, unmasked_map)
-            if y < WIDTH-1:
+            if y < HEIGHT-1:
                 update_mask_map(mask_map, x, y+1, unmasked_map)
 
 
 def set_flag(mask_map, x, y):
-    mask_map[x][y] = FLAG
+    mask_map[y][x] = FLAG
 
 
 def get_input():
@@ -151,7 +152,7 @@ def get_input():
 
 def is_valid_input(inputs):
     is_valid = True
-    if inputs[0] not in [str(_) for _ in range(HEIGHT)] or inputs[1] not in [str(_) for _ in range(WIDTH)]:
+    if inputs[0] not in [str(_) for _ in range(WIDTH)] or inputs[1] not in [str(_) for _ in range(HEIGHT)]:
         is_valid = False
     if len(inputs) == 3:
         if inputs[2] != 'F':
