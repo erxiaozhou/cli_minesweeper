@@ -23,10 +23,15 @@ class Map:
 
     @property
     def masked_map(self):
-        masked_map = [[self.unmasked_map[y][x] if self.mask_map[y][x]
-                       else self.unknown_icon for x in range(self.width)] for y in range(self.height)]
+        masked_map = [[self._determine_one_masked_tile(x, y) for x in range(self.width)] for y in range(self.height)]
         return masked_map
-
+    def _determine_one_masked_tile(self, x, y):
+        if not self.mask_map[y][x]:
+            return self.unknown_icon
+        elif self.mask_map[y][x] == self.flag:
+            return self.flag
+        else:
+            return self.unmasked_map[y][x]
     @property
     def all_tiles_are_masked(self):
         return all(all(self.mask_map[y]) for y in range(self.height))

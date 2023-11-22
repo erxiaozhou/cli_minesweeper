@@ -1,4 +1,5 @@
 import random
+import os
 
 
 WIDTH = 5
@@ -39,6 +40,7 @@ def main():
 
 
 def print_all(width, height, to_display_map, mines_num, flags_left):
+    # os.system('cls' )
     background_str = generate_background_str(width, height, to_display_map)
     info_text = generate_info_text(mines_num, flags_left)
     ui = f'{info_text}\n{background_str}'
@@ -99,9 +101,17 @@ def draw_the_unmasked_map(mine_state_map):
 
 
 def generated_masked_map(unmasked_map, mask_map):
-    masked_map = [[unmasked_map[j][i] if mask_map[j][i]
-                   else UNKNOWN_ICON for i in range(WIDTH)] for j in range(HEIGHT)]
+    masked_map = [[_determine_one_masked_tile(i, j, mask_map, unmasked_map) for i in range(WIDTH)] for j in range(HEIGHT)]
     return masked_map
+
+
+def _determine_one_masked_tile(x, y, mask_map, unmasked_map):
+    if not mask_map[y][x]:
+        return UNKNOWN_ICON
+    elif mask_map[y][x] == FLAG:
+        return FLAG
+    else:
+        return unmasked_map[y][x]
 
 
 def generate_ori_mask_map(WIDTH, HEIGHT):

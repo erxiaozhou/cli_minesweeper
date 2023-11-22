@@ -1,4 +1,4 @@
-WIDTH = 3
+WIDTH = 5
 HEIGHT = 3
 MINE_ICON = '*'
 UNKNOWN_ICON = ' '
