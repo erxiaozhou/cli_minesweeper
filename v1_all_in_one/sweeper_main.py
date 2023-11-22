@@ -49,7 +49,7 @@ def print_all(width, height, to_display_board, mines_num, flags_left):
     print(ui)
 
 
-def generate_a_bar_str(width):
+def generate_a_horizontal_line(width):
     return '--'*width
 
 
@@ -62,9 +62,9 @@ def generate_background_str(width, height, unmasked_board):
     # generate the string ploting the board
     background_lines = []
     for y in range(height):
-        background_lines.append(generate_a_bar_str(width))
+        background_lines.append(generate_a_horizontal_line(width))
         background_lines.append(generate_a_line_content(unmasked_board[y]))
-    background_lines.append(generate_a_bar_str(width))
+    background_lines.append(generate_a_horizontal_line(width))
     background_str = '\n'.join(background_lines)
     return background_str
 
