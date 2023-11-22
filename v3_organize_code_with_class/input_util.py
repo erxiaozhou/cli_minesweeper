@@ -22,9 +22,9 @@ class UserInput:
 
 def _is_valid_input(inputs):
     is_valid = True
-    if inputs[0] not in [str(_) for _ in range(HEIGHT)]:
+    if inputs[0] not in [str(_) for _ in range(WIDTH)]:
         is_valid = False
-    if inputs[1] not in [str(_) for _ in range(WIDTH)]:
+    if inputs[1] not in [str(_) for _ in range(HEIGHT)]:
         is_valid = False
     if len(inputs) == 3:
         if inputs[2] != 'F':

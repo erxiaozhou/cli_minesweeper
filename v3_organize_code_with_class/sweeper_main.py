@@ -16,6 +16,7 @@ class Game:
         while True:
             user_input = UserInput.get_input_from_cli()
             if self.game_failed(user_input):
+                print("You lose!")
                 break
             self.map.update_mask_map(user_input)
             if user_input.flag_a_tile:
@@ -35,7 +36,7 @@ class Game:
         print(ui)
 
     def game_failed(self, user_input):
-        return (not user_input.flag_a_tile) and bool(self.map.mine_state_map[user_input.x][user_input.y])
+        return (not user_input.flag_a_tile) and bool(self.map.mine_state_map[user_input.y][user_input.x])
 
     def game_succeed(self):
         return self.map.all_mines_are_flagged
